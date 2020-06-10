@@ -3,6 +3,8 @@ import 'package:gitboard/screens/chart_screen.dart';
 import 'package:gitboard/view_models/chart_list_view_model.dart';
 import 'package:provider/provider.dart';
 
+import 'blocs/repositories_language_bloc_provider.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
             create: (_) => ChartListViewModel(),
           )
         ],
-        child: ChartScreen(),
+        child: RepositoriesLanguageBlocProvider(child: ChartScreen()),
       ),
     );
   }

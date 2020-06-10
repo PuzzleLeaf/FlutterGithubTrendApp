@@ -17,5 +17,3 @@ class RepositoriesBloc {
     _trendingRepositoriesFetcher.close();
   }
 }
-
-final bloc = RepositoriesBloc();

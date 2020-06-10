@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gitboard/blocs/repositories_bloc.dart';
+import 'package:gitboard/blocs/repositories_language_bloc.dart';
+import 'package:gitboard/blocs/repositories_language_bloc_provider.dart';
+import 'package:gitboard/models/repository_model.dart';
 
 class ChartScreen extends StatefulWidget {
   @override
@@ -7,11 +9,13 @@ class ChartScreen extends StatefulWidget {
 }
 
 class _ChartScreenState extends State<ChartScreen> {
+  RepositoriesLanguageBloc bloc;
 
   @override
-  void initState() {
-    super.initState();
-    bloc.fetchTrendingRepositories();
+  void didChangeDependencies() {
+    bloc = RepositoriesLanguageBlocProvider.of(context).bloc;
+    bloc.fetchRepositoriesByLanguage('dart');
+    super.didChangeDependencies();
   }
 
   @override
@@ -26,21 +30,27 @@ class _ChartScreenState extends State<ChartScreen> {
       appBar: AppBar(),
       body: StreamBuilder(
         stream: bloc.trendingRepositories,
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        builder: (BuildContext _,
+            AsyncSnapshot<Future<List<RepositoryModel>>> snapshot) {
           if (snapshot.hasData) {
-            return ListView.builder(
-              itemBuilder: (_, index) {
-                return Text(snapshot.data[index].name);
-              },
-              itemCount: snapshot.data.length,
+            return FutureBuilder(
+                future: snapshot.data,
+                builder: (BuildContext __,
+                    AsyncSnapshot<List<RepositoryModel>> itemSnapShot) {
+                  if (itemSnapShot.hasData) {
+                    return ListView.builder(
+                      itemCount: itemSnapShot.data.length,
+                      itemBuilder: (__, index) {
+                        return Text(itemSnapShot.data[index].name);
+                      },
+                    );
+                  }
+                });
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
             );
-          } else if (snapshot.hasError) {
-            return Text("Error");
           }
-
-          return Center(
-            child: CircularProgressIndicator(),
-          );
         },
       ),
     );

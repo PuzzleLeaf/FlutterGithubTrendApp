@@ -1,6 +1,5 @@
 import 'package:gitboard/models/repository_model.dart';
 import 'package:gitboard/resources/repository.dart';
-import 'package:gitboard/view_models/repository_view_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RepositoriesLanguageBloc {
@@ -13,6 +12,12 @@ class RepositoriesLanguageBloc {
 
   RepositoriesLanguageBloc() {
     _language.stream.transform(_languageTransformer()).pipe(_repositories);
+  }
+
+  dispose() async {
+    _language.close();
+    await _repositories.drain();
+    _repositories.close();
   }
 
   _languageTransformer() {
