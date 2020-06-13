@@ -4,16 +4,29 @@ import 'package:rxdart/rxdart.dart';
 
 class RepositoriesBloc {
   final _repository = Repository();
-  final _trendingRepositoriesFetcher = PublishSubject<List<RepositoryViewModel>>();
+  final _trendingRepositoriesFetcher = BehaviorSubject<List<RepositoryViewModel>>();
 
   Stream<List<RepositoryViewModel>> get trendingRepositories => _trendingRepositoriesFetcher.stream;
 
-  fetchTrendingRepositories() async {
-    var list = await _repository.fetchTrendingRepositories();
+  void fetchTrendingLanguageRepositories(String language) {
+   fetchTrendingRepositories(language, "", "");
+  }
+
+  void fetchTrendingSinceRepositories(String since) {
+   fetchTrendingRepositories("", since, "");
+  }
+
+  void fetchTrendingSpokenLanguageRepositories(String spokenLanguageCode) {
+   fetchTrendingRepositories("", "", spokenLanguageCode);
+  }
+
+  void fetchTrendingRepositories(String language, String since, String spokenLanguageCode) async {
+    var list = await _repository.fetchTrendingRepositories(language, since, spokenLanguageCode);
     _trendingRepositoriesFetcher.sink.add(list.map((data) => RepositoryViewModel(data)).toList());
   }
 
-  dispose() {
+  dispose() async {
+    await _trendingRepositoriesFetcher.drain();
     _trendingRepositoriesFetcher.close();
   }
 }

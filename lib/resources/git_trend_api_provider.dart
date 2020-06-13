@@ -6,8 +6,8 @@ import 'package:gitboard/models/repository_model.dart';
 class GitTrendApiProvider {
   Dio dio = Dio();
 
-  Future<List<RepositoryModel>> fetchTrendingRepositories() async {
-    var url = 'https://ghapi.huchen.dev/repositories';
+  Future<List<RepositoryModel>> fetchTrendingRepositories(String language, String since, String spokenLanguageCode) async {
+    var url = 'https://ghapi.huchen.dev/repositories?language=${language}&since=${since}&spoken_language_code=${spokenLanguageCode}';
     final response = await dio.get(url);
 
     if (response.statusCode == 200) {

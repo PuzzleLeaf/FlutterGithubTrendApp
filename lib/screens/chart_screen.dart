@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gitboard/blocs/repositories_language_bloc.dart';
-import 'package:gitboard/blocs/repositories_language_bloc_provider.dart';
-import 'package:gitboard/models/repository_model.dart';
+import 'package:gitboard/blocs/repositories_bloc.dart';
+import 'package:gitboard/view_models/repository_view_model.dart';
+import 'package:provider/provider.dart';
 
 class ChartScreen extends StatefulWidget {
   @override
@@ -9,12 +9,13 @@ class ChartScreen extends StatefulWidget {
 }
 
 class _ChartScreenState extends State<ChartScreen> {
-  RepositoriesLanguageBloc bloc;
+  RepositoriesBloc bloc;
 
   @override
   void didChangeDependencies() {
-    bloc = RepositoriesLanguageBlocProvider.of(context).bloc;
-    bloc.fetchRepositoriesByLanguage('dart');
+    bloc = Provider.of<RepositoriesBloc>(context);
+    bloc.fetchTrendingSpokenLanguageRepositories("ko");
+    print('change');
     super.didChangeDependencies();
   }
 
@@ -24,6 +25,7 @@ class _ChartScreenState extends State<ChartScreen> {
     super.dispose();
   }
 
+  Color color = Colors.green;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,25 +33,36 @@ class _ChartScreenState extends State<ChartScreen> {
       body: StreamBuilder(
         stream: bloc.trendingRepositories,
         builder: (BuildContext _,
-            AsyncSnapshot<Future<List<RepositoryModel>>> snapshot) {
+            AsyncSnapshot<List<RepositoryViewModel>> snapshot) {
           if (snapshot.hasData) {
-            return FutureBuilder(
-                future: snapshot.data,
-                builder: (BuildContext __,
-                    AsyncSnapshot<List<RepositoryModel>> itemSnapShot) {
-                  if (itemSnapShot.hasData) {
-                    return ListView.builder(
-                      itemCount: itemSnapShot.data.length,
-                      itemBuilder: (__, index) {
-                        return Text(itemSnapShot.data[index].name);
-                      },
-                    );
-                  }
-                });
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
+            return InkWell(
+              child: ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext __, int index) {
+                  RepositoryViewModel vm = snapshot.data[index];
+                  return Card(
+                    child: ListTile(
+                      leading: Image.network(vm.avatar),
+                      title: Text(vm.name),
+                      subtitle: InkWell(
+                        onTap: () {
+                          color = Colors.black;
+                          setState(() {
+                            
+                          });
+                        },
+                        child: Text(vm.description,
+                          style: TextStyle(
+                            color: color,
+                          ),
+                    ),
+                      ),)
+                  );
+                },
+              ),
             );
+          } else {
+            return Container();
           }
         },
       ),
