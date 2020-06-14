@@ -50,10 +50,10 @@ class ChartItem extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Constants.fromHex(data.languageColor),
+                    color: Constants.fromHex(data.languageColor ?? '#000000'),
                   ),
                   child: Text(
-                    data.language,
+                    data.language ?? 'Empty',
                     style: TextStyle(
                       fontSize: ScreenUtil().setSp(10),
                       fontWeight: FontWeight.w500,

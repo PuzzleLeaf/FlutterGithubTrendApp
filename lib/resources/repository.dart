@@ -5,7 +5,4 @@ class Repository {
   final GitTrendApiProvider gitTrendApiProvider = GitTrendApiProvider();
 
   Future<List<RepositoryModel>> fetchTrendingRepositories(String language, String since, String spokenLanguageCode) => gitTrendApiProvider.fetchTrendingRepositories(language, since, spokenLanguageCode);
-
-  Future<List<RepositoryModel>> fetchTrendingLanguageRepositories(String language) => gitTrendApiProvider.fetchTrendingLanguageRepositories(language);
-
 }

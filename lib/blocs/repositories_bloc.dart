@@ -9,18 +9,18 @@ class RepositoriesBloc {
   Stream<List<RepositoryViewModel>> get trendingRepositories => _trendingRepositoriesFetcher.stream;
 
   void fetchTrendingLanguageRepositories(String language) {
-   fetchTrendingRepositories(language, "", "");
+   _fetchTrendingRepositories(language, "", "");
   }
 
   void fetchTrendingSinceRepositories(String since) {
-   fetchTrendingRepositories("", since, "");
+   _fetchTrendingRepositories("", since, "");
   }
 
   void fetchTrendingSpokenLanguageRepositories(String spokenLanguageCode) {
-   fetchTrendingRepositories("", "", spokenLanguageCode);
+   _fetchTrendingRepositories("", "", spokenLanguageCode);
   }
 
-  void fetchTrendingRepositories(String language, String since, String spokenLanguageCode) async {
+  void _fetchTrendingRepositories(String language, String since, String spokenLanguageCode) async {
     var list = await _repository.fetchTrendingRepositories(language, since, spokenLanguageCode);
     _trendingRepositoriesFetcher.sink.add(list.map((data) => RepositoryViewModel(data)).toList());
   }
