@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitboard/blocs/repositories_bloc.dart';
+import 'package:gitboard/models/chart_model.dart';
 import 'package:gitboard/screens/chart_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,9 @@ class MyApp extends StatelessWidget {
         providers: [
           Provider(
             create: (_) => RepositoriesBloc(),
+          ),
+          Provider(
+            create: (_) => ChartModel(),
           )
         ],
         child: ChartScreen(),

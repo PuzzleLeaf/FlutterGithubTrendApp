@@ -1,85 +1,105 @@
 class RepositoryModel {
-  String author;
-  String name;
-  String avatar;
-  String url;
-  String description;
-  String language;
-  String languageColor;
-  int stars;
-  int forks;
-  int currentPeriodStars;
-  List<BuiltBy> builtBy;
+  String _author;
+  String _name;
+  String _avatar;
+  String _url;
+  String _description;
+  String _language;
+  String _languageColor;
+  int _stars;
+  int _forks;
+  int _currentPeriodStars;
+  List<BuiltBy> _builtBy;
 
-  RepositoryModel(
-      {this.author,
-        this.name,
-        this.avatar,
-        this.url,
-        this.description,
-        this.language,
-        this.languageColor,
-        this.stars,
-        this.forks,
-        this.currentPeriodStars,
-        this.builtBy});
-
-  RepositoryModel.fromJson(Map<String, dynamic> json) {
-    author = json['author'];
-    name = json['name'];
-    avatar = json['avatar'];
-    url = json['url'];
-    description = json['description'];
-    language = json['language'];
-    languageColor = json['languageColor'];
-    stars = json['stars'];
-    forks = json['forks'];
-    currentPeriodStars = json['currentPeriodStars'];
-    if (json['builtBy'] != null) {
-      builtBy = new List<BuiltBy>();
-      json['builtBy'].forEach((v) {
-        builtBy.add(new BuiltBy.fromJson(v));
-      });
-    }
+  RepositoryModel({
+    String author,
+    String name,
+    String avatar,
+    String url,
+    String description,
+    String language,
+    String languageColor,
+    int stars,
+    int forks,
+    int currentPeriodStars,
+    List<BuiltBy> builtBy,
+  }) {
+    this._author = author;
+    this._name = name;
+    this._avatar = avatar;
+    this._url = url;
+    this._description = description;
+    this._language = language;
+    this._languageColor = languageColor;
+    this._stars = stars;
+    this._forks = forks;
+    this._currentPeriodStars = currentPeriodStars;
+    this._builtBy = builtBy;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['author'] = this.author;
-    data['name'] = this.name;
-    data['avatar'] = this.avatar;
-    data['url'] = this.url;
-    data['description'] = this.description;
-    data['language'] = this.language;
-    data['languageColor'] = this.languageColor;
-    data['stars'] = this.stars;
-    data['forks'] = this.forks;
-    data['currentPeriodStars'] = this.currentPeriodStars;
-    if (this.builtBy != null) {
-      data['builtBy'] = this.builtBy.map((v) => v.toJson()).toList();
+  String get author => _author;
+
+  String get name => _name;
+
+  String get avatar => _avatar;
+
+  String get url => _url;
+
+  String get description => _description;
+
+  String get language => _language;
+
+  String get languageColor => _languageColor;
+
+  int get stars => _stars;
+
+  int get forks => _forks;
+
+  int get currentPeriodStars => _currentPeriodStars;
+
+  List<BuiltBy> get builtBy => _builtBy;
+
+  RepositoryModel.fromJson(Map<String, dynamic> json) {
+    _author = json['author'];
+    _name = json['name'];
+    _avatar = json['avatar'];
+    _url = json['url'];
+    _description = json['description'];
+    _language = json['language'];
+    _languageColor = json['languageColor'];
+    _stars = json['stars'];
+    _forks = json['forks'];
+    _currentPeriodStars = json['currentPeriodStars'];
+    if (json['builtBy'] != null) {
+      _builtBy = new List<BuiltBy>();
+      json['builtBy'].forEach((v) {
+        _builtBy.add(new BuiltBy.fromJson(v));
+      });
     }
-    return data;
   }
 }
 
 class BuiltBy {
-  String username;
-  String href;
-  String avatar;
+  String _username;
+  String _href;
+  String _avatar;
 
-  BuiltBy({this.username, this.href, this.avatar});
-
-  BuiltBy.fromJson(Map<String, dynamic> json) {
-    username = json['username'];
-    href = json['href'];
-    avatar = json['avatar'];
+  BuiltBy({String username, String href, String avatar}) {
+    this._username = username;
+    this._href = href;
+    this._avatar = avatar;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['username'] = this.username;
-    data['href'] = this.href;
-    data['avatar'] = this.avatar;
-    return data;
+  String get username => _username;
+  set username(String username) => _username = username;
+  String get href => _href;
+  set href(String href) => _href = href;
+  String get avatar => _avatar;
+  set avatar(String avatar) => _avatar = avatar;
+
+  BuiltBy.fromJson(Map<String, dynamic> json) {
+    _username = json['username'];
+    _href = json['href'];
+    _avatar = json['avatar'];
   }
 }

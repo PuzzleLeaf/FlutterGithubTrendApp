@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gitboard/blocs/repositories_bloc.dart';
-import 'package:gitboard/view_models/repository_view_model.dart';
+import 'package:gitboard/models/chart_model.dart';
+import 'package:gitboard/models/repository_model.dart';
 import 'package:gitboard/widgets/chart_item.dart';
 import 'package:gitboard/widgets/group_button.dart';
 import 'package:provider/provider.dart';
@@ -13,17 +14,14 @@ class ChartScreen extends StatefulWidget {
 
 class _ChartScreenState extends State<ChartScreen> {
   RepositoriesBloc bloc;
+  ChartModel chartModel;
 
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    bloc = Provider.of<RepositoriesBloc>(context);
-    bloc.fetchTrendingSinceRepositories('daily');
-    super.didChangeDependencies();
+    chartModel = Provider.of<ChartModel>(context, listen: false);
+    bloc = Provider.of<RepositoriesBloc>(context, listen: false);
+    bloc.fetchTrendingRepositories(chartModel);
   }
 
   @override
@@ -32,7 +30,7 @@ class _ChartScreenState extends State<ChartScreen> {
     super.dispose();
   }
 
-  Widget _chartList(List<RepositoryViewModel> data) {
+  Widget _chartList(List<RepositoryModel> data) {
     return ListView.builder(
       padding: const EdgeInsets.all(0),
       itemCount: data.length,
@@ -84,7 +82,8 @@ class _ChartScreenState extends State<ChartScreen> {
             ),
             child: GroupButton(
               onPressed: (val) {
-                bloc.fetchTrendingSinceRepositories(val);
+                chartModel.since = val;
+                bloc.fetchTrendingRepositories(chartModel);
               },
             ),
           ),
@@ -92,9 +91,27 @@ class _ChartScreenState extends State<ChartScreen> {
             child: StreamBuilder(
               stream: bloc.trendingRepositories,
               builder: (BuildContext context,
-                  AsyncSnapshot<List<RepositoryViewModel>> snapshot) {
-                if (snapshot.hasData) {
-                  return _chartList(snapshot.data);
+                  AsyncSnapshot<Future<List<RepositoryModel>>> s1) {
+                if (s1.hasData) {
+                  return FutureBuilder(
+                    future: s1.data,
+                    builder: (BuildContext _,
+                        AsyncSnapshot<List<RepositoryModel>> s2) {
+                      if (s2.connectionState == ConnectionState.done) {
+                        if (s2.hasData) {
+                          return _chartList(s2.data);
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  );
                 } else {
                   return Center(
                     child: CircularProgressIndicator(),

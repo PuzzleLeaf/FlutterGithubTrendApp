@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gitboard/models/repository_model.dart';
 import 'package:gitboard/utils/constants.dart';
-import 'package:gitboard/view_models/repository_view_model.dart';
 
 class ChartItem extends StatelessWidget {
   final int rank;
-  final RepositoryViewModel data;
+  final RepositoryModel data;
   final double width;
   final double height;
 
