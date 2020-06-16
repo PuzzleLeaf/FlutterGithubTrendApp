@@ -30,24 +30,9 @@ class _ChartScreenState extends State<ChartScreen> {
     super.dispose();
   }
 
-  Widget _chartList(List<RepositoryModel> data) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(0),
-      itemCount: data.length,
-      itemBuilder: (BuildContext _, int index) {
-        return Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: 5,
-            horizontal: 10,
-          ),
-          child: ChartItem(
-            rank: index + 1,
-            data: data[index],
-            width: ScreenUtil().setWidth(375),
-            height: ScreenUtil().setWidth(120),
-          ),
-        );
-      },
+  Widget _loadingWidget() {
+    return Center(
+      child: CircularProgressIndicator(),
     );
   }
 
@@ -56,7 +41,7 @@ class _ChartScreenState extends State<ChartScreen> {
     ScreenUtil.init(context, width: 375, height: 812, allowFontScaling: false);
 
     return Scaffold(
-      backgroundColor: Color(0xffF6F7FA),
+      backgroundColor: Color(0xfff6f7fa),
       body: Column(
         children: <Widget>[
           Container(
@@ -72,7 +57,6 @@ class _ChartScreenState extends State<ChartScreen> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(25)),
             width: ScreenUtil().setWidth(280),
             height: ScreenUtil().setHeight(40),
             alignment: Alignment.center,
@@ -81,8 +65,8 @@ class _ChartScreenState extends State<ChartScreen> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: GroupButton(
-              onPressed: (val) {
-                chartModel.since = val;
+              onPressed: (since) {
+                chartModel.since = since;
                 bloc.fetchTrendingRepositories(chartModel);
               },
             ),
@@ -95,27 +79,38 @@ class _ChartScreenState extends State<ChartScreen> {
                 if (s1.hasData) {
                   return FutureBuilder(
                     future: s1.data,
-                    builder: (BuildContext _,
+                    builder: (BuildContext context,
                         AsyncSnapshot<List<RepositoryModel>> s2) {
                       if (s2.connectionState == ConnectionState.done) {
                         if (s2.hasData) {
-                          return _chartList(s2.data);
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount: s2.data.length,
+                            itemBuilder: (BuildContext _, int index) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: ScreenUtil().setHeight(5),
+                                  horizontal: ScreenUtil().setWidth(10),
+                                ),
+                                child: ChartItem(
+                                  rank: index + 1,
+                                  data: s2.data[index],
+                                ),
+                              );
+                            },
+                          );
                         } else {
                           return Center(
-                            child: CircularProgressIndicator(),
+                            child: Text('Empty'),
                           );
                         }
                       } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return _loadingWidget();
                       }
                     },
                   );
                 } else {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return _loadingWidget();
                 }
               },
             ),

@@ -13,7 +13,7 @@ class GroupButton extends StatefulWidget {
 
 class _GroupButtonState extends State<GroupButton> {
   int _selected = 0;
-  Color _selectedColor = Color(0xff1D2440);
+  Color _selectedColor = Color(0xff1d2440);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _GroupButtonState extends State<GroupButton> {
             height: ScreenUtil().setHeight(40),
             child: FlatButton(
               onPressed: () {
-                 setState(() {
+                setState(() {
                   _selected = 0;
                   widget.onPressed(Since.daily);
                 });
@@ -53,7 +53,7 @@ class _GroupButtonState extends State<GroupButton> {
             height: ScreenUtil().setHeight(40),
             child: FlatButton(
               onPressed: () {
-                 setState(() {
+                setState(() {
                   _selected = 1;
                   widget.onPressed(Since.weekly);
                 });
@@ -79,7 +79,7 @@ class _GroupButtonState extends State<GroupButton> {
             height: ScreenUtil().setHeight(40),
             child: FlatButton(
               onPressed: () {
-                 setState(() {
+                setState(() {
                   _selected = 2;
                   widget.onPressed(Since.monthly);
                 });
@@ -96,7 +96,7 @@ class _GroupButtonState extends State<GroupButton> {
               ),
             ),
           ),
-        ),
+        )
       ],
     );
   }

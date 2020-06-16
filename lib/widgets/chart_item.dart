@@ -6,17 +6,14 @@ import 'package:gitboard/utils/constants.dart';
 class ChartItem extends StatelessWidget {
   final int rank;
   final RepositoryModel data;
-  final double width;
-  final double height;
 
-  const ChartItem({Key key, this.rank, this.data, this.width, this.height})
-      : super(key: key);
+  const ChartItem({Key key, this.rank, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: this.width,
-      height: this.height,
+      width: ScreenUtil().setWidth(375),
+      height: ScreenUtil().setHeight(120),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
@@ -30,7 +27,7 @@ class ChartItem extends StatelessWidget {
               child: Text(
                 '$rank',
                 style: TextStyle(
-                  color: Color(0xff3B3647),
+                  color: Color(0xff3b3647),
                   fontSize: ScreenUtil().setSp(40),
                   fontWeight: FontWeight.bold,
                 ),
@@ -40,17 +37,15 @@ class ChartItem extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 2,
-                    horizontal: 5,
-                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
                     color: Constants.fromHex(data.languageColor ?? '#000000'),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   child: Text(
                     data.language ?? 'Empty',
@@ -66,11 +61,12 @@ class ChartItem extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: ScreenUtil().setSp(20),
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 Text(
                   data.author,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: ScreenUtil().setSp(15),
                     fontWeight: FontWeight.w400,
