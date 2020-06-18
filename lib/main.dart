@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gitboard/blocs/repositories_bloc.dart';
-import 'package:gitboard/models/chart_model.dart';
+import 'package:gitboard/models/repository_query_model.dart';
 import 'package:gitboard/screens/chart_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'blocs/repository_query_bloc.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,6 +20,11 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           elevation: 0,
           color: Colors.transparent,
+          textTheme: TextTheme(
+            headline6:TextStyle(
+              color: Colors.black,
+            )
+          ),
           iconTheme: IconThemeData(
             color: Colors.black,
           ),
@@ -27,10 +33,10 @@ class MyApp extends StatelessWidget {
       home: MultiProvider(
         providers: [
           Provider(
-            create: (_) => RepositoriesBloc(),
+            create: (_) => RepositoryQueryBloc(),
           ),
           Provider(
-            create: (_) => ChartModel(),
+            create: (_) => RepositoryQueryModel(),
           )
         ],
         child: ChartScreen(),

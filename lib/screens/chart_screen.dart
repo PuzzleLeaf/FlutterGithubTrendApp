@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gitboard/blocs/repositories_bloc.dart';
-import 'package:gitboard/models/chart_model.dart';
+import 'package:gitboard/blocs/repository_query_bloc.dart';
 import 'package:gitboard/models/repository_model.dart';
+import 'package:gitboard/models/repository_query_model.dart';
 import 'package:gitboard/screens/repository_detail_screen.dart';
+import 'package:gitboard/utils/constants.dart';
 import 'package:gitboard/widgets/chart_item.dart';
 import 'package:gitboard/widgets/group_button.dart';
 import 'package:provider/provider.dart';
@@ -14,15 +15,15 @@ class ChartScreen extends StatefulWidget {
 }
 
 class _ChartScreenState extends State<ChartScreen> {
-  RepositoriesBloc bloc;
-  ChartModel chartModel;
+  RepositoryQueryBloc bloc;
+  RepositoryQueryModel query;
 
   @override
   void initState() {
     super.initState();
-    chartModel = Provider.of<ChartModel>(context, listen: false);
-    bloc = Provider.of<RepositoriesBloc>(context, listen: false);
-    bloc.fetchTrendingRepositories(chartModel);
+    query = Provider.of<RepositoryQueryModel>(context, listen: false);
+    bloc = Provider.of<RepositoryQueryBloc>(context, listen: false);
+    bloc.fetchRepositoryQuery(query);
   }
 
   @override
@@ -46,19 +47,75 @@ class _ChartScreenState extends State<ChartScreen> {
       body: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: ScreenUtil().setHeight(50)),
+            margin: EdgeInsets.only(
+              top: ScreenUtil().setHeight(50),
+              bottom: ScreenUtil().setHeight(20),
+            ),
             height: ScreenUtil().setHeight(80),
-            alignment: Alignment.center,
-            child: Text(
-              'Gitboard',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(40),
-                fontWeight: FontWeight.bold,
-              ),
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: PopupMenuButton(onSelected: (val) {
+                    query.language = val;
+                    bloc.fetchRepositoryQuery(query);
+                  }, itemBuilder: (BuildContext _) {
+                    return Constants.languages.map((language) {
+                      return PopupMenuItem(
+                        value: language,
+                        child: Text(language.name),
+                      );
+                    }).toList();
+                  }),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Gitboard',
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setSp(45),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: ScreenUtil().setWidth(100),
+                  child: StreamBuilder(
+                    stream: bloc.repositoryQuery,
+                    builder: (BuildContext _,
+                        AsyncSnapshot<RepositoryQueryModel> snapshot) {
+
+                      Color color = Colors.black;
+                      String lanaguage = "All";
+                      if (snapshot.hasData) {
+                        color = Constants.fromHex(snapshot.data.language.color);
+                        lanaguage = snapshot.data.language.name;
+                      }
+                      return Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          lanaguage,
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(10),
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(bottom: 10),
+            margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(10)),
             width: ScreenUtil().setWidth(280),
             height: ScreenUtil().setHeight(40),
             alignment: Alignment.center,
@@ -68,8 +125,8 @@ class _ChartScreenState extends State<ChartScreen> {
             ),
             child: GroupButton(
               onPressed: (since) {
-                chartModel.since = since;
-                bloc.fetchTrendingRepositories(chartModel);
+                query.since = since;
+                bloc.fetchRepositoryQuery(query);
               },
             ),
           ),
@@ -91,8 +148,11 @@ class _ChartScreenState extends State<ChartScreen> {
                             itemBuilder: (BuildContext _, int index) {
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext __) {
-                                    return RepositoryDetailScreen();
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (BuildContext __) {
+                                    return RepositoryDetailScreen(
+                                      data: s2.data[index],
+                                    );
                                   }));
                                 },
                                 child: Container(

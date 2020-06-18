@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:gitboard/models/chart_model.dart';
+import 'package:gitboard/models/repository_query_model.dart';
 
 class GroupButton extends StatefulWidget {
   final Function onPressed;
