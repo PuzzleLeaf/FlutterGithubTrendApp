@@ -1,16 +1,29 @@
-# gitboard
+# Flutter Github Trending App
+Flutter Github Trending App (Bloc, Provider)
 
-Github Trend App
+<img src="./readme/1.png" width="250"/>
 
-## Getting Started
+### API
+Github Trending API
+* https://github.com/huchenme/github-trending-api
 
-This project is a starting point for a Flutter application.
+### Package
+Dio : A powerful Http client for Dart
+* https://pub.dev/packages/dio
 
-A few resources to get you started if this is your first Flutter project:
+Provider : A wrapper around InheritedWidget to make them easier to use and more reusable.
+* https://pub.dev/packages/provider
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Flutter ScreenUtil : A flutter plugin for adapting screen and font size.Let your UI display a reasonable layout on different screen sizes!
+* https://pub.dev/packages/flutter_screenutil
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Rxdart : RxDart adds additional capabilities to Dart Streams and StreamControllers.
+* https://pub.dev/packages/rxdart
+
+### Youtube
+[![Flutter Github Trending App](./readme/youtube.png)](https://youtu.be/OQFlWj78SV0)
+
+
+### Reference
+Design
+* https://bit.ly/2zA8nOy
