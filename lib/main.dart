@@ -15,7 +15,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Gitboard',
-      theme: ThemeData(),
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+          color: Colors.transparent,
+          iconTheme: IconThemeData(
+            color: Colors.black,
+          ),
+        ),
+      ),
       home: MultiProvider(
         providers: [
           Provider(

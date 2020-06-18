@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gitboard/blocs/repositories_bloc.dart';
 import 'package:gitboard/models/chart_model.dart';
 import 'package:gitboard/models/repository_model.dart';
+import 'package:gitboard/screens/repository_detail_screen.dart';
 import 'package:gitboard/widgets/chart_item.dart';
 import 'package:gitboard/widgets/group_button.dart';
 import 'package:provider/provider.dart';
@@ -57,6 +58,7 @@ class _ChartScreenState extends State<ChartScreen> {
             ),
           ),
           Container(
+            margin: const EdgeInsets.only(bottom: 10),
             width: ScreenUtil().setWidth(280),
             height: ScreenUtil().setHeight(40),
             alignment: Alignment.center,
@@ -87,14 +89,21 @@ class _ChartScreenState extends State<ChartScreen> {
                             padding: EdgeInsets.zero,
                             itemCount: s2.data.length,
                             itemBuilder: (BuildContext _, int index) {
-                              return Container(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: ScreenUtil().setHeight(5),
-                                  horizontal: ScreenUtil().setWidth(10),
-                                ),
-                                child: ChartItem(
-                                  rank: index + 1,
-                                  data: s2.data[index],
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext __) {
+                                    return RepositoryDetailScreen();
+                                  }));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: ScreenUtil().setHeight(5),
+                                    horizontal: ScreenUtil().setWidth(10),
+                                  ),
+                                  child: ChartItem(
+                                    rank: index + 1,
+                                    data: s2.data[index],
+                                  ),
                                 ),
                               );
                             },
