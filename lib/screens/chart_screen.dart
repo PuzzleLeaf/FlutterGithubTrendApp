@@ -143,6 +143,7 @@ class _ChartScreenState extends State<ChartScreen> {
                                     MaterialPageRoute(
                                       builder: (BuildContext __) {
                                         return RepositoryDetailScreen(
+                                          since: Constants.sinceToString(query.since),
                                           data: s2.data[index],
                                         );
                                       },

@@ -5,9 +5,11 @@ import 'package:gitboard/widgets/language_label.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RepositoryDetailScreen extends StatelessWidget {
+  final String since;
   final RepositoryModel data;
 
-  const RepositoryDetailScreen({Key key, this.data}) : super(key: key);
+  const RepositoryDetailScreen({Key key, this.since, this.data})
+      : super(key: key);
 
   Future<void> _launchInBrowser(String url) async {
     if (await canLaunch(url)) {
@@ -25,7 +27,15 @@ class RepositoryDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xfff6f7fa),
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          since.toUpperCase(),
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(15),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: Container(
         width: ScreenUtil().setWidth(375),
         child: SingleChildScrollView(

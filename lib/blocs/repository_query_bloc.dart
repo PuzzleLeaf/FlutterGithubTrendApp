@@ -1,6 +1,7 @@
 import 'package:gitboard/models/repository_model.dart';
 import 'package:gitboard/models/repository_query_model.dart';
 import 'package:gitboard/resources/repository.dart';
+import 'package:gitboard/utils/constants.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RepositoryQueryBloc {
@@ -27,7 +28,7 @@ class RepositoryQueryBloc {
   _queryTransformer() {
     return ScanStreamTransformer(
         (Future<List<RepositoryModel>> trendingRepositories, RepositoryQueryModel query, int index) {
-          trendingRepositories = _repository.fetchTrendingRepositories(query.language.urlParam, query.since.toString().split('.').last, '');
+          trendingRepositories = _repository.fetchTrendingRepositories(query.language.urlParam, Constants.sinceToString(query.since), '');
           return trendingRepositories;
         },
     );
