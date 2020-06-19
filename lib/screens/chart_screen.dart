@@ -7,6 +7,7 @@ import 'package:gitboard/screens/repository_detail_screen.dart';
 import 'package:gitboard/utils/constants.dart';
 import 'package:gitboard/widgets/chart_item.dart';
 import 'package:gitboard/widgets/group_button.dart';
+import 'package:gitboard/widgets/language_label.dart';
 import 'package:provider/provider.dart';
 
 class ChartScreen extends StatefulWidget {
@@ -86,27 +87,16 @@ class _ChartScreenState extends State<ChartScreen> {
                     stream: bloc.repositoryQuery,
                     builder: (BuildContext _,
                         AsyncSnapshot<RepositoryQueryModel> snapshot) {
-
-                      Color color = Colors.black;
-                      String lanaguage = "All";
+                      String language = "All";
+                      String color;
                       if (snapshot.hasData) {
-                        color = Constants.fromHex(snapshot.data.language.color);
-                        lanaguage = snapshot.data.language.name;
+                        color = snapshot.data.language.color;
+                        language = snapshot.data.language.name;
                       }
-                      return Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: color,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          lanaguage,
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(10),
-                            color: Colors.white,
-                          ),
-                        ),
+
+                      return LanguageLabel(
+                        language: language ?? 'All',
+                        color: color,
                       );
                     },
                   ),
@@ -148,12 +138,16 @@ class _ChartScreenState extends State<ChartScreen> {
                             itemBuilder: (BuildContext _, int index) {
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
                                       builder: (BuildContext __) {
-                                    return RepositoryDetailScreen(
-                                      data: s2.data[index],
-                                    );
-                                  }));
+                                        return RepositoryDetailScreen(
+                                          data: s2.data[index],
+                                        );
+                                      },
+                                    ),
+                                  );
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gitboard/models/repository_model.dart';
-import 'package:gitboard/utils/constants.dart';
+import 'package:gitboard/widgets/language_label.dart';
 
 class ChartItem extends StatelessWidget {
   final int rank;
@@ -40,21 +40,9 @@ class ChartItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: Constants.fromHex(data.languageColor ?? '#000000'),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Text(
-                    data.language ?? 'Empty',
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(10),
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
+                LanguageLabel(
+                  language: data.language,
+                  color: data.languageColor,
                 ),
                 Text(
                   data.name,
