@@ -56,51 +56,55 @@ class _ChartScreenState extends State<ChartScreen> {
             child: Stack(
               children: <Widget>[
                 Positioned(
-                  top: 0,
-                  right: 0,
-                  child: PopupMenuButton(onSelected: (val) {
-                    query.language = val;
-                    bloc.fetchRepositoryQuery(query);
-                  }, itemBuilder: (BuildContext _) {
-                    return Constants.languages.map((language) {
-                      return PopupMenuItem(
-                        value: language,
-                        child: Text(language.name),
-                      );
-                    }).toList();
-                  }),
+                  top: 5,
+                  right: 5,
+                  child: PopupMenuButton(
+                      child: Icon(Icons.more_vert),
+                      onSelected: (val) {
+                        query.language = val;
+                        bloc.fetchRepositoryQuery(query);
+                      },
+                      itemBuilder: (BuildContext _) {
+                        return Constants.languages.map((language) {
+                          return PopupMenuItem(
+                            value: language,
+                            child: Text(language.name),
+                          );
+                        }).toList();
+                      }),
                 ),
                 Align(
                   alignment: Alignment.center,
-                  child: Text(
-                    'Gitboard',
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(45),
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        'Gitboard',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(45),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      StreamBuilder(
+                        stream: bloc.repositoryQuery,
+                        builder: (BuildContext _,
+                            AsyncSnapshot<RepositoryQueryModel> snapshot) {
+                          String language = "All";
+                          String color;
+                          if (snapshot.hasData) {
+                            color = snapshot.data.language.color;
+                            language = snapshot.data.language.name;
+                          }
+
+                          return LanguageLabel(
+                            language: language ?? 'All',
+                            color: color,
+                          );
+                        },
+                      )
+                    ],
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  right: ScreenUtil().setWidth(100),
-                  child: StreamBuilder(
-                    stream: bloc.repositoryQuery,
-                    builder: (BuildContext _,
-                        AsyncSnapshot<RepositoryQueryModel> snapshot) {
-                      String language = "All";
-                      String color;
-                      if (snapshot.hasData) {
-                        color = snapshot.data.language.color;
-                        language = snapshot.data.language.name;
-                      }
-
-                      return LanguageLabel(
-                        language: language ?? 'All',
-                        color: color,
-                      );
-                    },
-                  ),
-                )
               ],
             ),
           ),
@@ -143,7 +147,8 @@ class _ChartScreenState extends State<ChartScreen> {
                                     MaterialPageRoute(
                                       builder: (BuildContext __) {
                                         return RepositoryDetailScreen(
-                                          since: Constants.sinceToString(query.since),
+                                          since: Constants.sinceToString(
+                                              query.since),
                                           data: s2.data[index],
                                         );
                                       },
