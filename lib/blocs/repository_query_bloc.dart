@@ -38,5 +38,6 @@ class RepositoryQueryBloc {
     await _repositoryQuery.drain();
     await _trendingRepositoriesFetcher.drain();
     _trendingRepositoriesFetcher.close();
+    _repositoryQuery.close();
   }
 }
