@@ -1,7 +1,8 @@
 # Flutter Github Trending App
 Flutter Github Trending App (Bloc, Provider)
 
-<img src="./readme/1.png" width="250"/>
+<img src="./readme/2.png" width="250"/> <img src="./readme/3.png" width="250"/> <img src="./readme/4.png" width="250"/>
+
 
 ### API
 Github Trending API
@@ -20,8 +21,15 @@ Flutter ScreenUtil : A flutter plugin for adapting screen and font size.Let your
 Rxdart : RxDart adds additional capabilities to Dart Streams and StreamControllers.
 * https://pub.dev/packages/rxdart
 
+url_launcher : A Flutter plugin for launching a URL in the mobile platform. Supports iOS and Android.
+* https://pub.dev/packages/url_launcher
+
+
 ### Youtube
 [![Flutter Github Trending App](./readme/youtube.png)](https://youtu.be/OQFlWj78SV0)
+
+
+[![Flutter Github Trending App 2](./readme/youtube2.png)](https://youtu.be/ioFBXawvFBY)
 
 
 ### Reference
